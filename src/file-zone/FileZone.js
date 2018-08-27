@@ -5,7 +5,7 @@ class FileZone extends Component {
     render() {
         return (
             <div id="file-zone">
-                <div id="file">
+                <div id="file" contentEditable={true}>
 
                 </div>
             </div>
