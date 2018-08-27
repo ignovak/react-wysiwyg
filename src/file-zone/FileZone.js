@@ -42,7 +42,9 @@ class FileZone extends Component {
         return (
             <div id="file-zone">
                 <ContextMenuTrigger id="context-menu-trigger">
-                    <div id="file" contentEditable={true}></div>
+                    <div id="file" contentEditable={true}>
+                        {this.props.text}
+                    </div>
                 </ContextMenuTrigger>
                 <ContextMenu id="context-menu-trigger" onShow={this.onContextMenu.bind(this)}>
                     <MenuItem disabled>

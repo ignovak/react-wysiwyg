@@ -5,11 +5,22 @@ import FileZone from "./file-zone/FileZone";
 import getMockText from './text.service';
 
 class App extends Component {
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+            text: ''
+        };
+        this.getText();
+    }
+
     getText() {
-        getMockText().then(function (result) {
-            console.log(result);
+        getMockText().then((result) => {
+            this.setState({
+                text: result
+            });
         });
     }
+
     render() {
         return (
             <div className="App">
@@ -18,7 +29,7 @@ class App extends Component {
                 </header>
                 <main>
                     <ControlPanel/>
-                    <FileZone/>
+                    <FileZone text={this.state.text}/>
                 </main>
             </div>
         );
