@@ -9,17 +9,19 @@ class FileZone extends Component {
         document.execCommand('styleWithCss', false, true);
         this.state = {
             isLoading: false,
+            selection: {},
             word: '',
             synonyms: []
         };
     }
 
     async onContextMenu() {
+        const { focusNode, anchorOffset, focusOffset } = getSelection();
         this.setState({
             isLoading: true,
+            selection: { focusNode, anchorOffset, focusOffset },
             synonyms: []
         });
-        const { focusNode, anchorOffset, focusOffset } = getSelection();
         const word = focusNode.data ? focusNode.data.slice(anchorOffset, focusOffset) : '';
         const synonyms = await fetchSynonyms(word);
         this.setState({
@@ -27,6 +29,13 @@ class FileZone extends Component {
             word,
             synonyms
         });
+    }
+
+    onMenuItemClick(e, { word }) {
+        const { focusNode, anchorOffset, focusOffset } = this.state.selection;
+        focusNode.textContent = focusNode.textContent.slice(0, anchorOffset) +
+            word +
+            focusNode.textContent.slice(focusOffset);
     }
 
     render() {
@@ -49,7 +58,7 @@ class FileZone extends Component {
                         this.state.synonyms.length ? [
                             <MenuItem key={'_divider'} divider />,
                             this.state.synonyms.map(
-                                word => <MenuItem key={word} data={{word}}>
+                                word => <MenuItem key={word} data={{word}} onClick={this.onMenuItemClick.bind(this)}>
                                     {word}
                                 </MenuItem>
                             )
