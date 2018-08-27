@@ -13,3 +13,48 @@
     background-color: #fff;
     border: 1px solid #e4dede;
 }
+
+.react-contextmenu-wrapper {
+    flex-grow: 1;
+    display: flex;
+}
+
+/*https://github.com/vkbansal/react-contextmenu/blob/de77bf3/examples/react-contextmenu.css*/
+.react-contextmenu {
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+    color: #373a3c;
+    margin: 2px 0 0;
+    opacity: 0;
+    padding: 5px 0;
+    transition: opacity .25s ease;
+}
+
+.react-contextmenu-item {
+    cursor: pointer;
+    padding: 3px 20px;
+}
+
+.react-contextmenu-item.react-contextmenu-item--active,
+.react-contextmenu-item.react-contextmenu-item--selected {
+    color: #fff;
+    background-color: #20a0ff;
+    border-color: #20a0ff;
+    text-decoration: none;
+}
+
+.react-contextmenu-item.react-contextmenu-item--disabled,
+.react-contextmenu-item.react-contextmenu-item--disabled:hover {
+    background-color: transparent;
+    border-color: rgba(0,0,0,.15);
+    color: #878a8c;
+    cursor: inherit;
+}
+
+.react-contextmenu-item--divider {
+    border-bottom: 1px solid rgba(0,0,0,.15);
+    cursor: inherit;
+    margin-bottom: 3px;
+    padding: 2px 0;
+}
