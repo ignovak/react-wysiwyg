@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
+import fetchSynonyms from '../api';
 import './FileZone.css';
 
 class FileZone extends Component {
@@ -7,15 +8,24 @@ class FileZone extends Component {
         super(props, context);
         document.execCommand('styleWithCss', false, true);
         this.state = {
-            word: ''
+            isLoading: false,
+            word: '',
+            synonyms: []
         };
     }
 
-    onContextMenu() {
-        const { focusNode, anchorOffset, focusOffset } = getSelection();
-        const word = focusNode.data.slice(anchorOffset, focusOffset);
+    async onContextMenu() {
         this.setState({
-            word
+            isLoading: true,
+            synonyms: []
+        });
+        const { focusNode, anchorOffset, focusOffset } = getSelection();
+        const word = focusNode.data ? focusNode.data.slice(anchorOffset, focusOffset) : '';
+        const synonyms = await fetchSynonyms(word);
+        this.setState({
+            isLoading: false,
+            word,
+            synonyms
         });
     }
 
@@ -26,8 +36,25 @@ class FileZone extends Component {
                     <div id="file" contentEditable={true}></div>
                 </ContextMenuTrigger>
                 <ContextMenu id="context-menu-trigger" onShow={this.onContextMenu.bind(this)}>
-                    <MenuItem disabled>Synonyms for "{this.state.word}":</MenuItem>
-                    <MenuItem divider />
+                    <MenuItem disabled>
+                        {
+                            this.state.isLoading ?
+                                'Loading synonyms...' :
+                                this.state.synonyms.length ?
+                                    `Synonyms for "${this.state.word}":` :
+                                    `No synonyms found for "${this.state.word}"`
+                        }
+                    </MenuItem>
+                    {
+                        this.state.synonyms.length ? [
+                            <MenuItem key={'_divider'} divider />,
+                            this.state.synonyms.map(
+                                word => <MenuItem key={word} data={{word}}>
+                                    {word}
+                                </MenuItem>
+                            )
+                        ] : ''
+                    }
                 </ContextMenu>
             </div>
         );
