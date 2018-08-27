@@ -10,3 +10,15 @@
     width: 200px;
     margin-right: 400px;
 }
+.format-action {
+    font-size: 13px;
+    margin: 0 2px;
+    padding: 1px 10px 2px;
+}
+.rc-color-picker-wrap {
+    vertical-align: top;
+    padding: 0;
+}
+.rc-color-picker-trigger {
+    padding: 0;
+}
